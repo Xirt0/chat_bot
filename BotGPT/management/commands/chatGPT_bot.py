@@ -2,14 +2,22 @@ import openai
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
-
-from config import TOKEN, TOKEN_OPENAI
+from .config import TOKEN, TOKEN_OPENAI
+from django.conf import settings
+from django.core.management.base import BaseCommand
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 openai.api_key = TOKEN_OPENAI
 
 dialog = []  # Переменная для сохранения состаяния диалога
+
+
+class Command(BaseCommand):
+    help = 'Telegram bot sutup commands'
+
+    def handle(self, *args, **options):
+        executor.start_polling(dp)
 
 
 @dp.message_handler()
